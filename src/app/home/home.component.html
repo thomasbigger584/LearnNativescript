@@ -1,0 +1,27 @@
+<ActionBar title="Home">
+</ActionBar>
+
+<GridLayout columns="*" rows="3*, *">
+
+    <Pager col="0" row="0" [items]="items" loadMoreCount="5" #pager [selectedIndex]="currentPagerIndex"
+        (selectedIndexChange)="onIndexChanged($event)" class="pager">
+
+        <ng-template let-i="index" let-item="item">
+
+            <GridLayout class="pager-item" columns="*" rows="*">
+
+                <label text="text" col="0" row="0"></label>
+
+                <Image col="0" row="1"  [src]="item.image">
+                </Image>
+
+            </GridLayout>
+        </ng-template>
+    </Pager>
+
+    <GridLayout col="0" row="2">
+        <Button text="Button.-primary.-rounded-lg" class="-primary -rounded-lg" text="Start Tour"
+            (tap)="onStartTourPress($event)"></Button>
+    </GridLayout>
+
+</GridLayout>
