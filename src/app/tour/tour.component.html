@@ -1,8 +1,19 @@
 <ActionBar>
-    <Label text="Browse"></Label>
+    <Label text="Tour"></Label>
 </ActionBar>
 
-<GridLayout class="page__content">
-    <Label class="page__content-icon far" text="&#xf1ea;"></Label>
-    <Label class="page__content-placeholder" text="<!-- Page content goes here -->"></Label>
-</GridLayout>
+<StackLayout class="page">
+        <Mapbox
+            #map
+            accessToken="sk.eyJ1IjoidGhvbWFzYmlnZ2VyNTg0IiwiYSI6ImNrMzJjdWZyOTBoMWIzbG1qejFzaHg0N3QifQ.4ksjKiGgfq0unirlEN1u5g"
+            mapStyle="traffic_day"
+            hideCompass="false"
+            zoomLevel="10"
+            showUserLocation="true"
+            disableZoom="false"
+            disableRotation="false"
+            disableScroll="false"
+            disableTilt="true"
+            (mapReady)="onMapReady($event)">
+        </Mapbox>
+    </StackLayout>

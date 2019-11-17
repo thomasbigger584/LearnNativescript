@@ -4,7 +4,8 @@ import { NativeScriptModule } from "nativescript-angular/nativescript.module";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 
-import { PagerModule } from "nativescript-pager/angular";
+import { registerElement } from "nativescript-angular/element-registry";
+registerElement("Mapbox", () => require("nativescript-mapbox").MapboxView);
 
 @NgModule({
     bootstrap: [

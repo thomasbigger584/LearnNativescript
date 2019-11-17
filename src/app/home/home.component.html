@@ -1,12 +1,12 @@
 <ActionBar title="Home">
 </ActionBar>
-<GridLayout columns="*" rows="4*, *">
+<GridLayout columns="*" rows="5*, *"  backgroundColor="blue">
 
-    <Pager peaking="15%" col="0" row="0" [items]="items" loadMoreCount="5" #pager>
+    <Pager peaking="15%" spacing="8%" col="0" row="0" [items]="items" showIndicator="true" loadMoreCount="5" #pager>
 
         <ng-template let-i="index" let-item="item">
             <GridLayout class="pager-item">
-                <GridLayout height="85%" width="90%">
+                <GridLayout height="85%">
                     <ImageCacheIt [src]="item.image"></ImageCacheIt>
                 </GridLayout>
             </GridLayout>
