@@ -1,51 +1,54 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { Accuracy } from "tns-core-modules/ui/enums";
 import * as geolocation from "nativescript-geolocation";
+import { MapboxViewApi, Viewport as MapboxViewport, LatLng } from "nativescript-mapbox";
+import { TourData } from "./TourData";
+import { Toasty } from "nativescript-toasty";
 
 @Component({
     selector: "Tour",
-    templateUrl: "./tour.component.html"
+    templateUrl: "./tour.component.html",
+    styleUrls: ["tour.css"]
 })
 export class TourComponent implements OnInit {
+    private map: MapboxViewApi;
 
-    currentLat = 54.621900;
-    currentLng = -6.214950;
-
-    @ViewChild("map", { static: true })
-    mapbox: ElementRef;
+    private currentLat = 54.621900;
+    private currentLng = -6.214950;
 
     ngOnInit(): void {
-        console.log('checking if geolocation is enabled');
-        geolocation.isEnabled().then(enabled => {
-            console.log('isEnabled =', enabled);
+        console.log("checking if geolocation is enabled");
+        geolocation.isEnabled().then((enabled) => {
+            this.toast("isEnabled =" + enabled);
             if (enabled) {
-                this.watch();
+                this.getUserLocation();
             } else {
-                this.request();
+                this.requestLocationPermissions();
             }
-        }, e => {
-            console.log('isEnabled error', e);
-            this.request();
+        }, (e) => {
+            this.toast("isEnabled error " +  e);
+            this.requestLocationPermissions();
         });
     }
 
-    request() {
-        console.log('enableLocationRequest()');
+    requestLocationPermissions() {
         geolocation.enableLocationRequest().then(() => {
-            console.log('location enabled!');
-            this.watch();
-        }, e => {
-            console.log('Failed to enable', e);
+            this.toast("location enabled!");
+            this.getUserLocation();
+        }, (e) => {
+            this.toast("Failed to enable", e);
         });
     }
 
-    watch() {
-        console.log('watchLocation()');
-        geolocation.watchLocation(position => {
+    getUserLocation() {
+        console.log("watchLocation()");
+        geolocation.watchLocation((position) => {
             this.currentLat = position.latitude;
             this.currentLng = position.longitude;
-        }, e => {
-            console.log('failed to get location');
+            const locationString = "Lat(" + this.currentLat + "), Lng(" + this.currentLng + ")";
+            this.toast(locationString);
+        }, (e) => {
+            this.toast("failed to get location");
         }, {
             desiredAccuracy: Accuracy.high,
             minimumUpdateTime: 500
@@ -53,13 +56,49 @@ export class TourComponent implements OnInit {
     }
 
     onMapReady(args: any) {
-        args.map.setCenter(
+        this.map = args.map;
+        const tourData = new TourData();
+        const thisTourData = tourData.getTourData();
+        const route = thisTourData.routes[0];
+        const routeGeopmetry = route.geometry;
+        const routeCoordinates = routeGeopmetry.coordinates;
+
+        const latLngs: Array<LatLng> = [];
+        // tslint:disable-next-line:prefer-for-of
+        for (let index = 0; index < routeCoordinates.length; index++) {
+            const routeCoord = routeCoordinates[index];
+            latLngs.push({ lng: routeCoord[0], lat: routeCoord[1] });
+        }
+
+        if (latLngs.length > 1) {
+            const startLatLng: LatLng = latLngs[0];
+            const endLatLng: LatLng = latLngs[latLngs.length - 1];
+            this.map.addPolyline({
+                id: new Date().getTime(),
+                width: 8,
+                color: "red",
+                points: latLngs
+            });
+            this.map.addMarkers([{
+                id: new Date().getTime(),
+                title: "Start",
+                subtitle: "Starting Location",
+                selected: true,
+                lat: startLatLng.lat,
+                lng: startLatLng.lng
+            },
             {
-                lat: this.currentLat, // mandatory
-                lng: this.currentLng, // mandatory
-                animated: true, // default true
-                zoomLevel: 14
-            }
-        )
+                id: new Date().getTime(),
+                title: "End",
+                subtitle: "Ending Location",
+                selected: true,
+                lat: endLatLng.lat,
+                lng: endLatLng.lng
+            }]);
+        }
+    }
+
+    toast(msg: string): void {
+        new Toasty({ text: msg }).show();
     }
 }

@@ -5,7 +5,7 @@ import { HomeRoutingModule } from "./home-routing.module";
 import { HomeComponent } from "./home.component";
 import { ItemDetailComponent } from "./item-detail/item-detail.component";
 import { PagerModule } from "nativescript-pager/angular";
-import { TNSImageCacheItModule } from 'nativescript-image-cache-it/angular';
+import { TNSImageCacheItModule } from "nativescript-image-cache-it/angular";
 
 @NgModule({
     imports: [

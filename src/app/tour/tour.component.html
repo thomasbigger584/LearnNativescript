@@ -1,19 +1,19 @@
-<ActionBar>
-    <Label text="Tour"></Label>
+<ActionBar title="Tour">
 </ActionBar>
 
-<StackLayout class="page">
-        <Mapbox
-            #map
-            accessToken="sk.eyJ1IjoidGhvbWFzYmlnZ2VyNTg0IiwiYSI6ImNrMzJjdWZyOTBoMWIzbG1qejFzaHg0N3QifQ.4ksjKiGgfq0unirlEN1u5g"
-            mapStyle="traffic_day"
-            hideCompass="false"
-            zoomLevel="10"
-            showUserLocation="true"
-            disableZoom="false"
-            disableRotation="false"
-            disableScroll="false"
-            disableTilt="true"
-            (mapReady)="onMapReady($event)">
-        </Mapbox>
-    </StackLayout>
+<GridLayout >
+    <Mapbox
+        accessToken="sk.eyJ1IjoiZWRkeXZlcmJydWdnZW4iLCJhIjoia1JpRW82NCJ9.OgnvpsKzB3GJhzyofQNUBw"
+        mapStyle="traffic_day"
+        zoomLevel="15"
+        latitude="54.584232"
+        longitude="-5.936611"
+        showUserLocation="true"
+        hideCompass="false"
+        disableZoom="false"
+        disableRotation="false"
+        disableScroll="false"
+        disableTilt="false"
+        (mapReady)="onMapReady($event)">
+    </Mapbox>
+</GridLayout>

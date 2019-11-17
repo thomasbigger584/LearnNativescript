@@ -2,13 +2,13 @@ import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 
 import { ObservableArray } from "@nativescript/core/data/observable-array/observable-array";
 
-import { Toasty } from 'nativescript-toasty';
+import { Toasty } from "nativescript-toasty";
 
-export interface PagerItem {
-    id: number,
-    title: string,
-    description: string
-    image: string
+export interface IPagerItem {
+    id: number;
+    title: string;
+    description: string;
+    image: string;
 }
 
 @Component({
@@ -20,10 +20,10 @@ export class HomeComponent implements OnInit {
     @ViewChild("pager", { static: true })
     pager: ElementRef;
 
-    items: ObservableArray<PagerItem>;
+    items: ObservableArray<IPagerItem>;
 
     constructor() {
-        const pagerItems: PagerItem[] = [
+        const pagerItems: Array<IPagerItem> = [
             {
                 id: 1,
                 title: "Slide 1",
@@ -65,19 +65,16 @@ export class HomeComponent implements OnInit {
                 title: "Slide 9",
                 description: "This is a description 9",
                 image: "https://images.unsplash.com/photo-1474861644511-0f2775ae97cc?auto=format&fit=crop&w=2391&q=80"
-            },
+            }
         ];
         this.items = new ObservableArray(pagerItems);
-
-
-
     }
 
     ngOnInit(): void {
         console.log("ngOnInit");
     }
 
-    public onStartTourPress(event): void {
-        new Toasty({ text: 'Toast message' }).show();
+    onStartTourPress(event): void {
+        new Toasty({ text: "Toast message" }).show();
     }
 }
